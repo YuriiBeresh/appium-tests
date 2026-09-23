@@ -26,6 +26,28 @@ class SettingsPage {
     async openFirstItem() {
         await this.firstCell.click();
     }
+        // поле пошуку у Settings
+    get searchField() {
+        return $('-ios class chain:**/XCUIElementTypeSearchField[`name == "Поиск"`]');
+    }
+
+    async tapSearch() {
+        await this.searchField.waitForExist({ timeout: 15000 });
+        await this.searchField.click();
+    }
+
+    async searchFor(text: string) {
+        await this.searchField.setValue(text);
+    }
+
+    async getSearchValue() {
+        return this.searchField.getValue();
+    }
+
+    // очистити поле пошуку
+    async clearSearch() {
+        await this.searchField.clearValue();
+    }
 }
 
 // експортуємо готовий ОБʼЄКТ (один екземпляр), а не клас —

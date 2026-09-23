@@ -27,4 +27,18 @@ describe('iOS Settings app', () => {
         await expect(titleAfter).not.toEqual(titleBefore);
     });
 
+    // SKIP: поле пошуку в iOS Settings — декоративна заглушка.
+    // Appium Inspector показує "Interactions for this element may not be available":
+    // value/name/label завжди = "Поиск" (плейсхолдер), програмний ввід тексту неможливий.
+    // Тап відкриває окремий екран пошуку. У реальній апці поля вводу нормальні —
+    // там цей сценарій працюватиме через setValue.
+    it.skip('should type into the search field', async () => {
+        await SettingsPage.waitUntilLoaded();
+        await SettingsPage.tapSearch();
+        await SettingsPage.searchFor('Wi-Fi');
+
+        const typed = await SettingsPage.getSearchValue();
+        await expect(typed).toContain('Wi-Fi');
+    });
+
 });
