@@ -1,5 +1,4 @@
 class SettingsPage {
-    // ЛОКАТОРИ (гетери — шукаються заново щоразу)
     get firstCell() {
         return $('-ios class chain:**/XCUIElementTypeCell[1]');
     }
@@ -16,11 +15,10 @@ class SettingsPage {
         return $('-ios class chain:**/XCUIElementTypeSearchField[`name == "Поиск"`]');
     }
 
-    // МЕТОДИ
     async waitUntilLoaded() {
         await this.firstCell.waitForDisplayed({
             timeout: 15000,
-            timeoutMsg: 'Список Settings не завантажився за 15с — екран не відкрився?',
+            timeoutMsg: 'Список Settings не завантажився за 15с',
         });
     }
 
@@ -36,16 +34,18 @@ class SettingsPage {
         await this.firstCell.click();
     }
 
-    // чекаємо, поки список головного екрана ЗНИКНЕ (reverse!)
-    async waitUntilListDisappeared() {
-        await this.firstCell.waitForDisplayed({
-            reverse: true,
-            timeout: 15000,
-            timeoutMsg: 'Список головного екрана не зник — перехід не відбувся?',
-        });
+    async scrollDown() {
+        await driver.execute('mobile: scroll', { direction: 'down' });
     }
 
-    // методи пошуку (для skip-тесту)
+    async scrollUp() {
+        await driver.execute('mobile: scroll', { direction: 'up' });
+    }
+
+    async swipe(direction: 'up' | 'down' | 'left' | 'right') {
+        await driver.execute('mobile: swipe', { direction });
+    }
+
     async tapSearch() {
         await this.searchField.waitForExist({ timeout: 15000 });
         await this.searchField.click();
